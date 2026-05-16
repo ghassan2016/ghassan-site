@@ -35,7 +35,7 @@ export function Philosophy() {
           {!errored ? (
             <div className="relative aspect-[16/10] sm:aspect-[16/9]">
               <Image
-                src="/workspace.jpg"
+                src="/workspace.jpeg"
                 alt="Ghassan at work — sticky-note philosophy on the wall: Work, Solve, Learn, Repeat."
                 fill
                 sizes="(min-width: 1024px) 1024px, 100vw"
@@ -72,7 +72,7 @@ function PhilosophyFallback() {
           focused steps.
         </p>
         <div className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">
-          Add /public/workspace.jpg
+          Add /public/workspace.jpeg
         </div>
       </div>
     </div>

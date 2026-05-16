@@ -10,30 +10,26 @@
 //   - Set CHAT_ENABLED=false to instantly disable the chat (e.g. if the
 //     account hits a limit or you suspect cookie leak).
 
-import path from "path";
 import {
   DIGITAL_GHASSAN_DESCRIPTION,
   DIGITAL_GHASSAN_GEM_NAME,
   DIGITAL_GHASSAN_SYSTEM_PROMPT,
 } from "./digital-ghassan-persona";
 
-// We use eval('require') so webpack/turbopack CANNOT see this as a static
-// import and try to bundle the vendored CJS package. The package has dozens
-// of internal require() calls and uses Node built-ins (fs, crypto) — only
-// Node's runtime resolver handles it correctly. Absolute path = no CWD
-// surprises during build/dev.
+// Static require — webpack analyzes this, bundles the entire vendored CJS
+// package into the API route's serverless function, and Vercel's file
+// tracer follows along automatically. No outputFileTracingIncludes hacks,
+// no eval, no runtime path resolution.
+//
+// fs/crypto/URLSearchParams are Node built-ins, handled by the nodejs
+// runtime configured in the route handler.
 type GeminiNS = {
   AuthGemini: new (opts: Record<string, unknown>) => GeminiClient;
   Gem: new (opts: { id: string; name: string; prompt?: string; predefined?: boolean }) => GemRef;
   Models: Record<string, unknown>;
 };
-
-function loadGemini(): GeminiNS {
-  const abs = path.resolve(process.cwd(), "lib/gemini-reversed/index.js");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dynRequire = eval("require") as (id: string) => any;
-  return dynRequire(abs);
-}
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const gemini: GeminiNS = require("./gemini-reversed");
 
 interface GemRef {
   id: string;
@@ -80,7 +76,6 @@ async function getClient(): Promise<GeminiClient> {
   if (!_clientPromise) {
     _clientPromise = (async () => {
       const { secure1psid, secure1psidts } = getCookieConfig();
-      const gemini = loadGemini();
       const client = new gemini.AuthGemini({
         secure1psid,
         secure1psidts,

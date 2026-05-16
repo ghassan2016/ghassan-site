@@ -16,7 +16,7 @@ export function Portrait() {
     <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-surface)] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]">
       {!errored ? (
         <Image
-          src="/portrait.jpg"
+          src="/portrait.png"
           alt={`${profile.name} — ${profile.role}`}
           fill
           priority
@@ -30,7 +30,7 @@ export function Portrait() {
             GA
           </div>
           <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-subtle)]">
-            Add /public/portrait.jpg
+            Add /public/portrait.png
           </div>
         </div>
       )}

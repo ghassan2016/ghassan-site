@@ -19,7 +19,7 @@ Open http://localhost:3000
 Drop your photo at:
 
 ```
-public/portrait.jpg
+public/portrait.jpeg
 ```
 
 The hero detects it automatically. If missing, the hero falls back to a clean "GA" monogram so the layout never breaks.
@@ -113,7 +113,7 @@ ghassan-site/
 │   └── gemini-reversed/              # Vendored client (CommonJS)
 ├── public/
 │   ├── Ghassan_Ahmed_CV.pdf
-│   └── portrait.jpg                  # ← drop your photo here
+│   └── portrait.jpeg                  # ← drop your photo here
 ├── .env.example
 ├── next.config.mjs                   # Webpack externalizes gemini-reversed
 └── ...
