@@ -3,16 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --color-bg: #08080b;
-  --color-surface: #0f0f14;
-  --color-surface-2: #14141b;
-  --color-border: #1f1f2a;
-  --color-border-strong: #2a2a38;
-  --color-fg: #f5f5f7;
-  --color-muted: #8b8b96;
-  --color-subtle: #5c5c66;
-  --color-accent: #7c9eff;
-  --color-accent-soft: #1a2238;
+  --color-bg: #060609;
+  --color-surface: #0c0c11;
+  --color-surface-2: #13131a;
+  --color-border: #1b1b24;
+  --color-border-strong: #2a2a36;
+  --color-fg: #f4f4f6;
+  --color-muted: #9d9daa;
+  --color-subtle: #6b6b78;
+  --color-accent: #8b7bff;
+  --color-accent-2: #4fd1e8;
+  --color-accent-soft: rgba(139, 123, 255, 0.12);
+  --gradient-accent: linear-gradient(100deg, #cfc6ff 0%, #8b7bff 45%, #4fd1e8 100%);
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 * {
@@ -21,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg);
@@ -28,65 +32,349 @@ html {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   background: var(--color-bg);
   color: var(--color-fg);
-  font-feature-settings: "ss01", "cv02", "cv11";
-  letter-spacing: -0.01em;
+  letter-spacing: -0.011em;
+  overflow-x: clip;
+}
+
+/* Film grain over everything — subtle, never blocks input. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-bg);
+  color: #fff;
 }
 
-.hero-glow {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 158, 255, 0.18), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 80% 110%, rgba(124, 158, 255, 0.08), transparent 70%);
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
+
+/* ── Type helpers ─────────────────────────────────────────────── */
+
+.font-serif-i,
+.serif-em em {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.text-gradient,
+.serif-em em {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* italics overhang their box; keep the last glyph from clipping */
+  padding-right: 0.08em;
+}
+
+/* ── Backgrounds ──────────────────────────────────────────────── */
 
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 80%);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 80%);
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 20%, transparent 75%);
 }
 
-.link-underline {
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.5;
+  will-change: transform;
+}
+.aurora .a1 {
+  width: 42rem;
+  height: 42rem;
+  left: -12rem;
+  top: -18rem;
+  background: #4b3bff;
+  animation: drift-1 22s ease-in-out infinite alternate;
+}
+.aurora .a2 {
+  width: 34rem;
+  height: 34rem;
+  right: -10rem;
+  top: -6rem;
+  background: #1fb6d6;
+  opacity: 0.32;
+  animation: drift-2 26s ease-in-out infinite alternate;
+}
+.aurora .a3 {
+  width: 30rem;
+  height: 30rem;
+  left: 35%;
+  top: 22rem;
+  background: #9d4bff;
+  opacity: 0.22;
+  animation: drift-3 30s ease-in-out infinite alternate;
+}
+@keyframes drift-1 {
+  to { transform: translate(10rem, 6rem) scale(1.15); }
+}
+@keyframes drift-2 {
+  to { transform: translate(-8rem, 10rem) scale(0.9); }
+}
+@keyframes drift-3 {
+  to { transform: translate(-6rem, -8rem) scale(1.2); }
+}
+
+/* ── Animated gradient ring (portrait, featured frames) ───────── */
+
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.ring-glow {
   position: relative;
 }
-.link-underline::after {
+.ring-glow::before {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
+  inset: -1px;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--angle),
+    rgba(255, 255, 255, 0.06) 0deg,
+    #8b7bff 70deg,
+    #4fd1e8 140deg,
+    rgba(255, 255, 255, 0.06) 210deg,
+    rgba(255, 255, 255, 0.06) 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-angle 7s linear infinite;
 }
-.link-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+@keyframes spin-angle {
+  to { --angle: 360deg; }
 }
 
+/* ── Spotlight cards (pointer-follow glow) ────────────────────── */
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before,
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+.spotlight::before {
+  z-index: -1;
+  background: radial-gradient(
+    520px circle at var(--x, 50%) var(--y, 50%),
+    rgba(139, 123, 255, 0.11),
+    transparent 42%
+  );
+}
+.spotlight::after {
+  padding: 1px;
+  background: radial-gradient(
+    380px circle at var(--x, 50%) var(--y, 50%),
+    rgba(160, 148, 255, 0.7),
+    rgba(79, 209, 232, 0.25) 30%,
+    transparent 55%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.spotlight-grid:hover .spotlight::before,
+.spotlight-grid:hover .spotlight::after {
+  opacity: 1;
+}
+
+/* ── Marquee ──────────────────────────────────────────────────── */
+
+.marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ── Device frames ────────────────────────────────────────────── */
+
+.phone {
+  border-radius: 2.6rem;
+  padding: 0.55rem;
+  background: linear-gradient(160deg, #3a3a48, #15151c 40%, #0b0b10);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 40px 80px -24px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.phone-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2.1rem;
+  background: #fff;
+}
+.phone-screen::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0.55rem;
+  left: 50%;
+  width: 30%;
+  height: 1.15rem;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #050507;
+}
+
+.browser {
+  overflow: hidden;
+  border-radius: 1rem;
+  background: #111117;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 50px 100px -30px rgba(0, 0, 0, 0.9);
+}
+
+/* ── Motion: intro + scroll reveal ────────────────────────────── */
+
 @media (prefers-reduced-motion: no-preference) {
-  .fade-up {
-    animation: fadeUp 0.7s ease-out both;
+  .intro {
+    animation: intro 0.9s var(--ease-out) both;
+    animation-delay: var(--d, 0ms);
   }
-  @keyframes fadeUp {
+  @keyframes intro {
     from {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(18px);
+      filter: blur(6px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
+      filter: none;
     }
+  }
+
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  html.js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Big showcase frames tip back into place as they arrive. */
+  html.js .tilt-in[data-reveal] {
+    transform: perspective(1800px) rotateX(16deg) translateY(48px) scale(0.96);
+    transform-origin: 50% 100%;
+    transition-duration: 1.3s;
+  }
+  html.js .tilt-in[data-reveal].is-in {
+    transform: perspective(1800px) rotateX(0) translateY(0) scale(1);
+  }
+
+  .float-slow {
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float {
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* ── Résumé page (/cv) ────────────────────────────────────────── */
+
+body:has(.cv-page) {
+  background: #ececf0;
+}
+body:has(.cv-page)::after {
+  display: none;
+}
+.cv-page {
+  /* plain glyphs parse more reliably in applicant-tracking systems */
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+}
+
+@page {
+  size: A4;
+  margin: 12mm 15mm;
+}
+
+@media print {
+  html,
+  body,
+  .cv-page {
+    background: #fff !important;
+  }
+  .cv-toolbar {
+    display: none !important;
+  }
+  .cv-sheet {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    box-shadow: none !important;
+  }
+  .cv-entry {
+    break-inside: avoid;
+  }
+  .cv-page h2 {
+    break-after: avoid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .aurora span,
+  .ring-glow::before,
+  .marquee-track {
+    animation: none;
   }
 }

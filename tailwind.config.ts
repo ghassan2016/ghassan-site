@@ -19,19 +19,13 @@ const config: Config = {
         muted: "var(--color-muted)",
         subtle: "var(--color-subtle)",
         accent: "var(--color-accent)",
+        "accent-2": "var(--color-accent-2)",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
-      },
-      animation: {
-        "fade-up": "fadeUp 0.7s ease-out both",
-      },
-      keyframes: {
-        fadeUp: {
-          from: { opacity: "0", transform: "translateY(12px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        arabic: ["var(--font-arabic)", "var(--font-sans)", "sans-serif"],
       },
     },
   },

@@ -1,6 +1,6 @@
 # Ghassan Ahmed — Personal Site
 
-Minimal, premium personal site built with **Next.js 14 (App Router)** + **Tailwind v3** + **TypeScript**. Dark aesthetic, fully responsive, accessible, SEO-ready — plus a floating "Digital Ghassan" AI chat widget powered by Gemini.
+Personal site built with **Next.js 14 (App Router)** + **Tailwind v3** + **TypeScript**. Dark editorial aesthetic with aurora gradients, scroll reveals, spotlight cards and device-frame showcases (BrightGaza flagship, Qareeb). Fully responsive, reduced-motion aware, SEO-ready with a generated share image — plus a floating "Digital Ghassan" AI chat widget powered by Gemini.
 
 ## Quick start
 
@@ -84,9 +84,9 @@ Mitigations baked in:
 
 ### Customize the persona
 
-Edit `lib/digital-ghassan-persona.ts` — the `DIGITAL_GHASSAN_SYSTEM_PROMPT` constant. Currently grounded in your CV: identity, current work (PalAI, ArabTalents), prior roles, stack, contact, voice rules, and boundaries.
+Edit `lib/digital-ghassan-persona.ts` — the `DIGITAL_GHASSAN_SYSTEM_PROMPT` constant. Currently grounded in your CV: identity, current work (BrightGaza, Qareeb, PalAI, ArabTalents), prior roles, stack, contact, voice rules, and boundaries.
 
-When you edit the prompt and want the gem on Gemini to update, you'll need to delete the gem from gemini.google.com (or call `client.updateGem(...)` from a script). Or just bump the gem name — the server will create a new one.
+When you edit the prompt and want the gem on Gemini to update, you'll need to delete the gem from gemini.google.com (or call `client.updateGem(...)` from a script). Or just bump `DIGITAL_GHASSAN_GEM_NAME` (currently `Digital Ghassan v2`) — the server will create a new one.
 
 ---
 
@@ -103,7 +103,9 @@ ghassan-site/
 │   │   └── chat/route.ts             # Streaming Digital Ghassan endpoint
 ├── components/
 │   ├── nav.tsx, hero.tsx, portrait.tsx, about.tsx
-│   ├── experience.tsx, projects.tsx, skills.tsx
+│   ├── flagship.tsx (BrightGaza), new-build.tsx (Qareeb)
+│   ├── experience.tsx, projects.tsx, skills.tsx, philosophy.tsx
+│   ├── reveal.tsx, spotlight.tsx, local-time.tsx
 │   ├── contact.tsx, footer.tsx, section.tsx
 │   └── chat-widget.tsx               # Floating chat launcher + panel
 ├── lib/
@@ -120,6 +122,19 @@ ghassan-site/
 ```
 
 **To update content:** edit `lib/data.ts` and `lib/digital-ghassan-persona.ts`. No copy is hard-coded inside components.
+
+---
+
+## Regenerate the CV PDF
+
+The résumé lives in `lib/cv.ts` and renders at `/cv` (single column, real text, standard headings — built to parse cleanly in applicant-tracking systems). After editing it, print the page to the PDF the site links to:
+
+```bash
+npm run dev
+"/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --headless=new --no-pdf-header-footer --print-to-pdf="public/Ghassan_Ahmed_CV.pdf" http://localhost:3000/cv
+```
+
+(Any Chromium works — or open `/cv` and use the browser's Print → Save as PDF with headers/footers off.)
 
 ---
 
@@ -144,11 +159,16 @@ Recommended hosts:
 
 | Token | Value | Use |
 |---|---|---|
-| `--color-bg` | `#08080b` | Page background |
-| `--color-fg` | `#f5f5f7` | Primary text |
-| `--color-muted` | `#8b8b96` | Secondary text |
-| `--color-accent` | `#7c9eff` | Eyebrow labels, focus rings |
-| `--color-surface` | `#0f0f14` | Card backgrounds |
+| `--color-bg` | `#060609` | Page background |
+| `--color-fg` | `#f4f4f6` | Primary text |
+| `--color-muted` | `#9d9daa` | Secondary text |
+| `--color-accent` | `#8b7bff` | Violet accent, focus rings, gradients |
+| `--color-accent-2` | `#4fd1e8` | Cyan accent, gradient end |
+| `--color-surface` | `#0c0c11` | Card backgrounds |
+
+Fonts (via `next/font`): Inter Tight (UI), Instrument Serif italic (accent words — wrap them in `<em>` inside section titles), JetBrains Mono (labels), IBM Plex Sans Arabic (Arabic text).
+
+Project screenshots live in `public/work/`.
 
 Swap the accent token to re-brand the entire site.
 
