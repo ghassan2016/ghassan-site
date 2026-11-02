@@ -1,27 +1,62 @@
 import type { Metadata, Viewport } from "next";
+import {
+  Inter_Tight,
+  Instrument_Serif,
+  JetBrains_Mono,
+  IBM_Plex_Sans_Arabic,
+} from "next/font/google";
 import "./globals.css";
 import { profile } from "@/lib/data";
-import { ChatWidget } from "@/components/chat-widget";
+import { RevealObserver } from "@/components/reveal";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ghassan-ahmed.dev";
+const sans = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const serif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
+const arabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["500", "600"],
+  variable: "--font-arabic",
+  display: "swap",
+  preload: false,
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ghassan-ahmed.vercel.app";
+const title = `${profile.name} — ${profile.role}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${profile.name} — ${profile.role}`,
+    default: title,
     template: `%s — ${profile.name}`,
   },
   description: profile.tagline,
   keywords: [
     "Ghassan Ahmed",
-    "Laravel engineer",
-    "Senior backend engineer",
-    "Palestine engineer",
-    "PalAI",
-    "ArabTalents",
-    "PHP",
-    "MySQL",
-    "RBAC",
+    "Software engineer",
+    "Full-stack engineer",
+    "Gaza",
+    "Palestine",
+    "BrightGaza",
+    "Qareeb",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "System design",
     "REST APIs",
   ],
   authors: [{ name: profile.name }],
@@ -29,13 +64,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: `${profile.name} — ${profile.role}`,
+    title,
     description: profile.tagline,
     siteName: profile.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${profile.name} — ${profile.role}`,
+    title,
     description: profile.tagline,
   },
   robots: {
@@ -45,7 +80,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08080b",
+  themeColor: "#060609",
   width: "device-width",
   initialScale: 1,
 };
@@ -56,18 +91,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html
+      lang="en"
+      className={`dark ${sans.variable} ${serif.variable} ${mono.variable} ${arabic.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
+        {/* Scroll-reveal only hides content once we know JS is running. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
         />
       </head>
       <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] antialiased">
         {children}
-        <ChatWidget />
+        <RevealObserver />
       </body>
     </html>
   );

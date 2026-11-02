@@ -10,8 +10,8 @@ interface Msg {
 }
 
 const SUGGESTIONS = [
-  "What kind of work are you available for?",
-  "Tell me about ArabTalents.",
+  "What do you do on BrightGaza?",
+  "Tell me about Qareeb.",
   "What's your strongest tech stack?",
   "How do I hire you?",
 ];
@@ -32,7 +32,7 @@ export function ChatWidget() {
       setMessages([
         {
           role: "model",
-          text: `Hi — I'm a digital version of Ghassan. Ask me about my work, stack, projects, or how to hire me. For anything serious, drop me a real email at ${profile.email}.`,
+          text: `Hi — I'm a digital version of Ghassan. Ask me about BrightGaza, Qareeb, my stack, or how to work together. For anything serious, drop me a real email at ${profile.email}.`,
         },
       ]);
     }
@@ -145,7 +145,7 @@ export function ChatWidget() {
       <button
         aria-label={open ? "Close chat" : "Chat with Digital Ghassan"}
         onClick={() => setOpen((v) => !v)}
-        className={`fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] transition-transform hover:scale-105 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
+        className={`fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] shadow-[0_0_0_4px_rgba(139,123,255,0.18),0_12px_40px_-8px_rgba(139,123,255,0.7)] transition-transform hover:scale-105 sm:bottom-6 sm:right-6 sm:h-14 sm:w-14 ${
           open ? "rotate-45" : ""
         }`}
       >
@@ -162,7 +162,7 @@ export function ChatWidget() {
 
       {/* Panel */}
       <div
-        className={`fixed bottom-20 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-surface)] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] transition-all duration-300 sm:bottom-24 sm:right-6 ${
+        className={`fixed bottom-20 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-[400px] flex-col overflow-hidden rounded-3xl border border-white/10 bg-[var(--color-surface)] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8),0_0_60px_-20px_rgba(139,123,255,0.35)] transition-all duration-300 sm:bottom-24 sm:right-6 ${
           open ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
         }`}
         style={{ height: "min(580px, calc(100vh - 7rem))" }}
