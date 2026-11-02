@@ -5,7 +5,29 @@
 
 import { profile, yearsShipping } from "./data";
 
-export const cv = {
+export type Cv = {
+  name: string;
+  headline: string;
+  contact: readonly { label: string; href?: string }[];
+  summary: string;
+  /** Optional keyword line shown as "Core Expertise" under the summary. */
+  expertise?: string;
+  skills: readonly { group: string; items: string }[];
+  experience: readonly {
+    role: string;
+    company: string;
+    location: string;
+    period: string;
+    bullets: readonly string[];
+  }[];
+  projects: readonly { name: string; kind: string; url: string; text: string; stack: string }[];
+  additionalProjects: string;
+  education: { degree: string; institution: string; year: string; note: string };
+  certifications: readonly string[];
+  languages: string;
+};
+
+export const cv: Cv = {
   name: profile.name,
   headline: "Senior Full-Stack Software Engineer",
   contact: [
@@ -140,4 +162,101 @@ export const cv = {
   ],
 
   languages: "Arabic (Native), English (Professional Working Proficiency)",
-} as const;
+};
+
+// Variant for backend / software-architecture roles (system reviews, CRM,
+// workflow automation, integrations). Rendered at /cv/backend.
+export const cvBackend: Cv = {
+  ...cv,
+  headline: "Senior Backend Engineer | Software Architecture and Systems Assessment",
+
+  summary: `Senior backend engineer with ${yearsShipping}+ years of experience designing, building, and reviewing production systems: architecture, databases, REST APIs, third-party integrations, and the business workflows behind them. Lead engineer on BrightGaza, a freelance marketplace connecting companies with vetted talent (12,500+ members, 3,200+ delivered projects, $480K+ in secure payments), including contracts, payments, and role-based management of clients, freelancers, and admins. Built client and employee management systems, real-time workflow automation, and secure API integrations for government and commercial clients in Palestine and Saudi Arabia. Comfortable reading and evaluating existing codebases, surfacing technical debt and missing requirements, and scoping work into phased delivery plans.`,
+
+  expertise:
+    "System Architecture Review, Source Code Analysis, Backend Architecture, Database Design, REST API Design, Third-Party Integrations, CRM and Client Management, Employee Management Systems, Workflow Automation, Business Rules, Role-Based Access Control (RBAC), Multi-Tenant Systems, Technical Debt Assessment, Requirements Gap Analysis, Effort Estimation, Technical Documentation",
+
+  skills: [
+    {
+      group: "Backend",
+      items:
+        "Laravel, PHP, Node.js, RESTful API Design, WebSockets, Authentication and Authorization, Role-Based Access Control (RBAC), MVC, CMS Development",
+    },
+    { group: "Databases", items: "MySQL, Relational Data Modeling, Schema Design, Performance Tuning" },
+    {
+      group: "Architecture",
+      items: "System Architecture, Multi-Tenant Systems, Secure Coding, Code Review, Performance Optimization",
+    },
+    {
+      group: "Frontend",
+      items: "TypeScript, JavaScript (ES6+), React, Next.js, Tailwind CSS, Internationalization (i18n) and RTL",
+    },
+    { group: "Tools and Workflow", items: "Git, GitHub, Postman, Linux, Vercel, Deployment Pipelines, Agile" },
+  ],
+
+  experience: [
+    {
+      ...cv.experience[0],
+      bullets: [
+        "Lead engineer on BrightGaza (brightgaza.com), a freelance marketplace connecting global companies with vetted Palestinian talent; the platform serves 12,500+ members with 3,200+ projects delivered and $480K+ in secure payments.",
+        "Designed backend workflows and business rules for the full engagement lifecycle: job posting, proposals, contracts, payments and billing, ratings, and reviews.",
+        "Architected client, freelancer, and admin management modules with role-based access control, analytics dashboards, and reporting, serving thousands of daily users in Arabic and English across PalAI.network and ArabTalents.org.",
+        "Built back-office systems for the Palestinian Ministry of Agriculture and Saudi Arabia's Human Rights Commission covering employee management, warehouse tracking, attendance, and reporting.",
+        "Owned authentication, REST API design, and third-party integrations across multi-tenant deployments; reviewed code and scoped features with design and product teams from planning through release.",
+      ],
+    },
+    {
+      ...cv.experience[1],
+      bullets: [
+        "Designed and shipped a real-time lead-prioritization pipeline over WebSockets that ranks incoming sales leads, cutting response time on high-intent leads.",
+        "Integrated RESTful APIs across internal applications and tuned performance for backend-heavy workloads.",
+        "Delivered five product landing pages end to end, from wireframes to responsive implementations.",
+      ],
+    },
+    cv.experience[2],
+  ],
+
+  projects: [
+    {
+      name: "Agricultural Risk Mitigation Fund",
+      kind: "Palestinian Ministry of Agriculture",
+      url: "padrrif.moa.pna.ps",
+      text: "Full back-office system for employee management, warehouse tracking, attendance, and reporting, with RBAC and analytics dashboards.",
+      stack: "Laravel, MySQL, RBAC, Analytics",
+    },
+    {
+      name: "ArabTalents",
+      kind: "Bilingual Freelance Marketplace",
+      url: "arabtalents.org",
+      text: "Gig lifecycle and bidding workflows, role-based dashboards for clients, freelancers, and admins, moderation tooling, and reporting.",
+      stack: "Laravel, MySQL, REST APIs, i18n/RTL",
+    },
+    {
+      name: "Human Rights Commission, Saudi Arabia",
+      kind: "E-Services Portal",
+      url: "e-services.hrc.gov.sa",
+      text: "Maintained the secure backend of an existing production portal and extended it with RESTful APIs and front-end layouts.",
+      stack: "Laravel, REST APIs, Secure Authentication",
+    },
+    {
+      name: "PalAI.network",
+      kind: "AI Talent Verification Platform",
+      url: "palai.network",
+      text: "Backend lead for certification and talent-verification workflows: profile validation, certification pipelines, and admin tooling.",
+      stack: "Laravel, MySQL, REST APIs, RBAC",
+    },
+    {
+      name: "Palestinian Central Bureau of Statistics",
+      kind: "National Statistics Portal",
+      url: "pcbs.gov.ps",
+      text: "Backend modules and dashboards for content management and bilingual data-publication workflows.",
+      stack: "Laravel, MySQL, CMS",
+    },
+    {
+      name: "Qareeb",
+      kind: "Delivery Platform",
+      url: "qareeb.ps",
+      text: "Designed and built from zero: ordering workflow, phone OTP authentication, and an operations dashboard; bilingual progressive web app.",
+      stack: "Next.js, React, PWA, Vercel",
+    },
+  ],
+};

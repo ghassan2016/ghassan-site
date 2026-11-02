@@ -136,6 +136,8 @@ npm run dev
 
 (Any Chromium works — or open `/cv` and use the browser's Print → Save as PDF with headers/footers off.)
 
+A role-specific variant for backend / software-architecture roles (`cvBackend` in `lib/cv.ts`) renders at `/cv/backend` — unlinked and `noindex` — and prints the same way to `public/Ghassan_Ahmed_CV_Backend.pdf`.
+
 ---
 
 ## Build & deploy
